@@ -1,0 +1,43 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# ===== Virtual environments =====
+venv/
+.venv/
+env/
+.env
+
+# ===== Datasets (auto-downloaded by torchvision) =====
+data/
+MNIST/
+cifar-10-batches-py/
+*.gz
+
+# ===== Docker =====
+*.log
+docker-compose.override.yml
+
+# ===== Attack outputs (keep curated examples, ignore bulk dumps) =====
+attacks/results/raw_batches/
+*.npy
+
+# ===== Secrets =====
+*.pem
+*.key
+secrets.json
+
+# ===== OS / editor junk =====
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# ===== Misc =====
+*.bak
+*.tmp
+.cache/
