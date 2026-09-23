@@ -2,11 +2,12 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# Prevent Python from creating .pyc files
-# and make logs appear immediatelyENV PYTHONDONTWRITEBYTECODE=1 \
+# Prevent Python from creating .pyc files and make logs appear immediately
+ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
 COPY requirements.txt .
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy inference server and pre-trained weights
