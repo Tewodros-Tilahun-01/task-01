@@ -1,0 +1,26 @@
+# Attack / experiment runtime dependencies
+# Add a package here only when an attack file actually imports it.
+
+# HTTP clients — used for sending crafted requests to the target API
+requests
+httpx
+
+# Numerical computing — needed for crafting adversarial perturbations
+numpy
+
+# Data handling — useful for loading/inspecting datasets used in attacks
+pandas
+
+# ML utilities — model evaluation, metrics, simple classifiers for baseline attacks
+scikit-learn
+
+# Plotting — visualising attack success rates, perturbation magnitudes, etc.
+matplotlib
+
+# Deep learning — needed to load the target model and craft adversarial examples
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.4.1+cpu
+torchvision==0.19.1+cpu
+
+# Image handling — loading/saving images for adversarial input crafting
+pillow
