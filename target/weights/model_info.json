@@ -1,0 +1,23 @@
+{
+  "architecture": "CifarCNN",
+  "num_classes": 10,
+  "input_shape": [
+    3,
+    32,
+    32
+  ],
+  "normalize": {
+    "mean": [
+      0.4914,
+      0.4822,
+      0.4465
+    ],
+    "std": [
+      0.247,
+      0.2435,
+      0.2616
+    ]
+  },
+  "best_val_acc": 0.8044,
+  "test_acc": 0.8026
+}
