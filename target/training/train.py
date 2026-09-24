@@ -22,14 +22,14 @@ import torch.optim as optim
 sys.path.insert(0, str(pathlib.Path(__file__).parent.parent))
 
 from app.model import CifarCNN              # noqa: E402
-from training.dataset import get_loaders    # noqa: E402
+from training.dataset import get_loaders, MEAN, STD  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
 TARGET_DIR   = pathlib.Path(__file__).parent.parent   # target/
 WEIGHTS_DIR  = TARGET_DIR / "weights"
-WEIGHTS_DIR.mkdir(exist_ok=True)
+WEIGHTS_DIR.mkdir(parents=True, exist_ok=True)
 
 WEIGHTS_PATH = WEIGHTS_DIR / "cifar_cnn.pth"
 INFO_PATH    = WEIGHTS_DIR / "model_info.json"
@@ -73,7 +73,7 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device : {device}\n")
 
-    train_loader, test_loader = get_loaders(batch_size=BATCH_SIZE)
+    train_loader, val_loader, test_loader = get_loaders(batch_size=BATCH_SIZE)
 
     model     = CifarCNN(num_classes=NUM_CLASSES).to(device)
     criterion = nn.CrossEntropyLoss()
@@ -89,7 +89,7 @@ def main():
             model, train_loader, optimizer, criterion, device, train=True
         )
         va_loss, va_acc = run_epoch(
-            model, test_loader, optimizer, criterion, device, train=False
+            model, val_loader, None, criterion, device, train=False
         )
         scheduler.step()
 
@@ -106,15 +106,21 @@ def main():
     print(f"\nBest val accuracy : {best_acc:.4f}")
     print(f"Weights saved to  : {WEIGHTS_PATH}")
 
+    # Load best weights and evaluate on test set once
+    model.load_state_dict(torch.load(WEIGHTS_PATH, map_location=device, weights_only=True))
+    te_loss, te_acc = run_epoch(model, test_loader, None, criterion, device, train=False)
+    print(f"Test accuracy     : {te_acc:.4f}")
+
     info = {
         "architecture": "CifarCNN",
         "num_classes":  NUM_CLASSES,
         "input_shape":  list(INPUT_SHAPE),
         "normalize":    {
-            "mean": [0.4914, 0.4822, 0.4465],
-            "std":  [0.2470, 0.2435, 0.2616],
+            "mean": list(MEAN),
+            "std":  list(STD),
         },
         "best_val_acc": round(best_acc, 6),
+        "test_acc":     round(te_acc, 6),
     }
     INFO_PATH.write_text(json.dumps(info, indent=2))
     print(f"Metadata saved to : {INFO_PATH}")
