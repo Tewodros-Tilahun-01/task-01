@@ -44,38 +44,9 @@ task-01/
 - Docker (for the target inference server)
 - Python 3.12 + `venv` (for the attack scripts only)
 
-### 2. Build and run the target
+### 2. Set up the attack environment
 
-The Docker commands are the same on all platforms. Run from the task-01 root:
-
-```bash
-docker build -t cifar10-target ./target
-```
-
-**Hardened run (integrity checks enabled)**
-
-The inference server verifies the SHA-256 hash of the weights and metadata before
-loading the model. Pass the expected hashes as environment variables:
-
-```bash
-docker run -p 127.0.0.1:8000:8000 \
-  -e MODEL_SHA256=c83f56d8354266c487c0a537d4c44e56149f27fcf8950f469b279ecf340d5929 \
-  -e MODEL_INFO_SHA256=b8435f91a1e1f5a9e96ea0c12c2f1fa29c8857221038e0eddb6759a701cbe6c8 \
-  cifar10-target:latest
-```
-
-If either file has been tampered with, the container will exit immediately with
-`File integrity check failed.` and the model will not load.
-
-> **Note:** if you retrain the model, run `python -m target.training.train` and copy
-> the new `-e` values it prints at the end of training.
-
-The API is then available at `http://localhost:8000`.  
-Interactive docs: `http://localhost:8000/docs`
-
-### 3. Set up the attack environment
-
-The virtual environment is only needed for running the attack scripts — the target itself runs entirely in Docker.
+The virtual environment is needed for training the model and running the attack scripts — the target inference server runs entirely in Docker.
 
 **Linux / macOS**
 ```bash
@@ -92,6 +63,34 @@ python -m venv .venv
 .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
+
+### 3. Build and run the target
+
+> If `target/weights/` is empty, train the model first — see [docs/target/training.md](docs/target/training.md).
+
+The Docker commands are the same on all platforms. Run from the task-01 root:
+
+```bash
+docker build -t cifar10-target ./target
+```
+
+**Hardened run (integrity checks enabled)**
+
+The inference server verifies the SHA-256 hash of the weights and metadata before
+loading the model. Pass the expected hashes as environment variables:
+
+```bash
+docker run -p 127.0.0.1:8000:8000 -e MODEL_SHA256=c83f56d8354266c487c0a537d4c44e56149f27fcf8950f469b279ecf340d5929 -e MODEL_INFO_SHA256=b8435f91a1e1f5a9e96ea0c12c2f1fa29c8857221038e0eddb6759a701cbe6c8 cifar10-target:latest
+```
+
+If either file has been tampered with, the container will exit immediately with
+`File integrity check failed.` and the model will not load.
+
+> **Note:** if you retrain the model, run `python -m target.training.train` and copy the new `-e` values it prints at the end of training — the hashes change every time the weights are updated and the container will refuse to start without the matching values.
+
+The API is then available at `http://localhost:8000`.  
+Interactive docs: `http://localhost:8000/docs`
+
 
 ### 4. Test a prediction
 
@@ -145,7 +144,6 @@ Full documentation lives in [`docs/`](docs/index.md).
 | [docs/target/overview.md](docs/target/overview.md) | Target purpose and design decisions |
 | [docs/target/architecture.md](docs/target/architecture.md) | CifarCNN layer-by-layer breakdown |
 | [docs/target/api.md](docs/target/api.md) | REST API reference |
-| [docs/target/setup.md](docs/target/setup.md) | Setup and deployment guide |
 | [docs/target/preprocessing.md](docs/target/preprocessing.md) | Image preprocessing pipeline |
 
 ---

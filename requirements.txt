@@ -1,26 +1,30 @@
-# Attack / experiment runtime dependencies
-# Add a package here only when an attack file actually imports it.
+# Shared dependencies — covers both training and attack scripts.
+# The Docker image uses target/requirements.txt (inference-only, no attack tools).
 
-# HTTP clients — used for sending crafted requests to the target API
-requests
-httpx
-
-# Numerical computing — needed for crafting adversarial perturbations
-numpy
-
-# Data handling — useful for loading/inspecting datasets used in attacks
-pandas
-
-# ML utilities — model evaluation, metrics, simple classifiers for baseline attacks
-scikit-learn
-
-# Plotting — visualising attack success rates, perturbation magnitudes, etc.
-matplotlib
-
-# Deep learning — needed to load the target model and craft adversarial examples
 --extra-index-url https://download.pytorch.org/whl/cpu
+
+# Deep learning — model training and adversarial example crafting
 torch==2.4.1+cpu
 torchvision==0.19.1+cpu
 
+# API server — needed to run the target locally (outside Docker)
+fastapi
+uvicorn[standard]
+python-multipart
+
+# HTTP clients — sending crafted requests to the target API
+requests
+httpx
+
 # Image handling — loading/saving images for adversarial input crafting
 pillow
+
+# Numerical computing — adversarial perturbations and data handling
+numpy
+pandas
+
+# ML utilities — metrics, baseline classifiers
+scikit-learn
+
+# Plotting — visualising attack results and perturbation magnitudes
+matplotlib
