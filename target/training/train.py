@@ -10,6 +10,7 @@ target/weights/cifar_cnn.pth     model weights (best val accuracy)
 target/weights/model_info.json   metadata consumed by app/inference.py
 """
 
+import hashlib
 import json
 import pathlib
 import sys
@@ -124,6 +125,13 @@ def main():
     }
     INFO_PATH.write_text(json.dumps(info, indent=2))
     print(f"Metadata saved to : {INFO_PATH}")
+
+    model_sha = hashlib.sha256(WEIGHTS_PATH.read_bytes()).hexdigest()
+    info_sha  = hashlib.sha256(INFO_PATH.read_bytes()).hexdigest()
+    print("\n# ── Copy these into your docker run command ──────────────────────")
+    print(f"  -e MODEL_SHA256={model_sha}")
+    print(f"  -e MODEL_INFO_SHA256={info_sha}")
+    print("# ──────────────────────────────────────────────────────────────────")
 
 
 if __name__ == "__main__":

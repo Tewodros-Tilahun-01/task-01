@@ -50,8 +50,25 @@ The Docker commands are the same on all platforms. Run from the task-01 root:
 
 ```bash
 docker build -t cifar10-target ./target
-docker run -p 8000:8000 cifar10-target
 ```
+
+**Hardened run (integrity checks enabled)**
+
+The inference server verifies the SHA-256 hash of the weights and metadata before
+loading the model. Pass the expected hashes as environment variables:
+
+```bash
+docker run -p 127.0.0.1:8000:8000 \
+  -e MODEL_SHA256=c83f56d8354266c487c0a537d4c44e56149f27fcf8950f469b279ecf340d5929 \
+  -e MODEL_INFO_SHA256=b8435f91a1e1f5a9e96ea0c12c2f1fa29c8857221038e0eddb6759a701cbe6c8 \
+  cifar10-target:latest
+```
+
+If either file has been tampered with, the container will exit immediately with
+`File integrity check failed.` and the model will not load.
+
+> **Note:** if you retrain the model, run `python -m target.training.train` and copy
+> the new `-e` values it prints at the end of training.
 
 The API is then available at `http://localhost:8000`.  
 Interactive docs: `http://localhost:8000/docs`

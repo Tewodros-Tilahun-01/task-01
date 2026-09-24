@@ -5,7 +5,11 @@ The module-level `predictor` singleton is created once at import time so
 all FastAPI workers share a single loaded model.
 """
 
+import hashlib
+import hmac
+import io
 import json
+import os
 import pathlib
 import sys
 from dataclasses import dataclass
@@ -43,6 +47,35 @@ class Prediction:
 
 
 # ---------------------------------------------------------------------------
+# Integrity helper
+# ---------------------------------------------------------------------------
+
+def _verified_bytes(path: pathlib.Path, env_var: str) -> bytes:
+    """
+    Read *path* once, hash the bytes with SHA-256, and compare the digest
+    to the hex value stored in environment variable *env_var*.
+
+    Returns the raw bytes on success.
+    Raises RuntimeError on any mismatch or missing env var.
+    The error message intentionally omits the path and the expected hash.
+    """
+    expected = os.environ.get(env_var)
+    if not expected:
+        raise RuntimeError(
+            f"Required environment variable {env_var!r} is not set. "
+            "Set it to the SHA-256 hex digest of the file."
+        )
+
+    data = path.read_bytes()
+    actual = hashlib.sha256(data).hexdigest()
+
+    if not hmac.compare_digest(actual, expected.lower()):
+        raise RuntimeError("File integrity check failed.")  # no path, no hash
+
+    return data
+
+
+# ---------------------------------------------------------------------------
 # Predictor
 # ---------------------------------------------------------------------------
 class Predictor:
@@ -55,25 +88,31 @@ class Predictor:
         self._load()
 
     def _load(self) -> None:
-        if not _WEIGHTS.exists():
-            print(
-                f"[WARNING] Weights not found at {_WEIGHTS}\n"
-                "         Run:  python -m target.training.train\n"
-                "         Then restart the server.",
-                file=sys.stderr,
+        # --- read and verify both files; fail closed on any problem ---
+        weights_bytes = _verified_bytes(_WEIGHTS,   "MODEL_SHA256")
+        info_bytes    = _verified_bytes(_INFO_FILE, "MODEL_INFO_SHA256")
+
+        # --- parse metadata from the verified bytes, not by re-reading ---
+        info = json.loads(info_bytes)
+        num_classes = info.get("num_classes")
+        if not isinstance(num_classes, int):
+            raise RuntimeError("model_info.json: 'num_classes' must be an integer.")
+        if num_classes != len(CIFAR10_CLASSES):
+            raise RuntimeError(
+                f"model_info.json: num_classes={num_classes} does not match "
+                f"the {len(CIFAR10_CLASSES)} known classes."
             )
-            return
 
-        info = json.loads(_INFO_FILE.read_text()) if _INFO_FILE.exists() else {}
-        num_classes = info.get("num_classes", 10)
-
+        # --- load weights from the already-verified bytes ---
         model = CifarCNN(num_classes=num_classes).to(self.device)
-        model.load_state_dict(torch.load(_WEIGHTS, map_location=self.device))
+        model.load_state_dict(
+            torch.load(io.BytesIO(weights_bytes), map_location=self.device, weights_only=True)
+        )
         model.eval()
 
         self.model = model
         self.info  = info
-        print(f"[INFO] Model loaded from {_WEIGHTS} on {self.device}", file=sys.stderr)
+        print(f"[INFO] Model loaded on {self.device}", file=sys.stderr)  # no path
 
     @property
     def ready(self) -> bool:
