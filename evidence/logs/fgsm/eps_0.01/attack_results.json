@@ -1,0 +1,275 @@
+{
+  "epsilon": 0.01,
+  "results": [
+    {
+      "index": 2,
+      "true_label": 8,
+      "true_class": "ship",
+      "clean_pred": 8,
+      "clean_class": "ship",
+      "adv_pred": 0,
+      "adv_class": "airplane",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 0,
+        "class_name": "airplane",
+        "confidence": 0.574461,
+        "probabilities": {
+          "0": 0.574461,
+          "1": 0.019816,
+          "2": 0.026613,
+          "3": 0.025652,
+          "4": 0.002249,
+          "5": 0.003614,
+          "6": 0.004702,
+          "7": 0.00622,
+          "8": 0.225952,
+          "9": 0.110721
+        }
+      }
+    },
+    {
+      "index": 4,
+      "true_label": 6,
+      "true_class": "frog",
+      "clean_pred": 6,
+      "clean_class": "frog",
+      "adv_pred": 4,
+      "adv_class": "deer",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 4,
+        "class_name": "deer",
+        "confidence": 0.60184,
+        "probabilities": {
+          "0": 0.000862,
+          "1": 1.4e-05,
+          "2": 0.062954,
+          "3": 0.015415,
+          "4": 0.60184,
+          "5": 0.001618,
+          "6": 0.31699,
+          "7": 3.1e-05,
+          "8": 0.000262,
+          "9": 1.4e-05
+        }
+      }
+    },
+    {
+      "index": 5,
+      "true_label": 6,
+      "true_class": "frog",
+      "clean_pred": 6,
+      "clean_class": "frog",
+      "adv_pred": 5,
+      "adv_class": "dog",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 5,
+        "class_name": "dog",
+        "confidence": 0.420389,
+        "probabilities": {
+          "0": 0.002199,
+          "1": 0.002186,
+          "2": 0.030046,
+          "3": 0.372495,
+          "4": 0.011329,
+          "5": 0.420389,
+          "6": 0.111506,
+          "7": 0.018195,
+          "8": 0.030064,
+          "9": 0.001592
+        }
+      }
+    },
+    {
+      "index": 6,
+      "true_label": 1,
+      "true_class": "automobile",
+      "clean_pred": 1,
+      "clean_class": "automobile",
+      "adv_pred": 2,
+      "adv_class": "bird",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 2,
+        "class_name": "bird",
+        "confidence": 0.177172,
+        "probabilities": {
+          "0": 0.144982,
+          "1": 0.044083,
+          "2": 0.177172,
+          "3": 0.154372,
+          "4": 0.02216,
+          "5": 0.115528,
+          "6": 0.100071,
+          "7": 0.042605,
+          "8": 0.126933,
+          "9": 0.072093
+        }
+      }
+    },
+    {
+      "index": 12,
+      "true_label": 5,
+      "true_class": "dog",
+      "clean_pred": 5,
+      "clean_class": "dog",
+      "adv_pred": 7,
+      "adv_class": "horse",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 5,
+        "class_name": "dog",
+        "confidence": 0.355616,
+        "probabilities": {
+          "0": 0.002844,
+          "1": 0.00017,
+          "2": 0.059601,
+          "3": 0.078425,
+          "4": 0.156405,
+          "5": 0.355616,
+          "6": 0.006423,
+          "7": 0.33986,
+          "8": 0.000306,
+          "9": 0.00035
+        }
+      }
+    },
+    {
+      "index": 20,
+      "true_label": 7,
+      "true_class": "horse",
+      "clean_pred": 7,
+      "clean_class": "horse",
+      "adv_pred": 5,
+      "adv_class": "dog",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 5,
+        "class_name": "dog",
+        "confidence": 0.241107,
+        "probabilities": {
+          "0": 0.021846,
+          "1": 0.002367,
+          "2": 0.156287,
+          "3": 0.195577,
+          "4": 0.211982,
+          "5": 0.241107,
+          "6": 0.036303,
+          "7": 0.127592,
+          "8": 0.002925,
+          "9": 0.004015
+        }
+      }
+    },
+    {
+      "index": 22,
+      "true_label": 4,
+      "true_class": "deer",
+      "clean_pred": 4,
+      "clean_class": "deer",
+      "adv_pred": 2,
+      "adv_class": "bird",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 2,
+        "class_name": "bird",
+        "confidence": 0.560177,
+        "probabilities": {
+          "0": 0.113507,
+          "1": 0.000235,
+          "2": 0.560177,
+          "3": 0.137598,
+          "4": 0.052194,
+          "5": 0.029071,
+          "6": 0.026438,
+          "7": 0.003508,
+          "8": 0.076795,
+          "9": 0.000476
+        }
+      }
+    },
+    {
+      "index": 23,
+      "true_label": 9,
+      "true_class": "truck",
+      "clean_pred": 9,
+      "clean_class": "truck",
+      "adv_pred": 0,
+      "adv_class": "airplane",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 0,
+        "class_name": "airplane",
+        "confidence": 0.399736,
+        "probabilities": {
+          "0": 0.399736,
+          "1": 0.003923,
+          "2": 0.060164,
+          "3": 0.013115,
+          "4": 0.088671,
+          "5": 0.003253,
+          "6": 0.002043,
+          "7": 0.016536,
+          "8": 0.389196,
+          "9": 0.023362
+        }
+      }
+    },
+    {
+      "index": 25,
+      "true_label": 2,
+      "true_class": "bird",
+      "clean_pred": 2,
+      "clean_class": "bird",
+      "adv_pred": 4,
+      "adv_class": "deer",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 2,
+        "class_name": "bird",
+        "confidence": 0.265705,
+        "probabilities": {
+          "0": 0.004869,
+          "1": 4.6e-05,
+          "2": 0.265705,
+          "3": 0.263082,
+          "4": 0.260489,
+          "5": 0.104066,
+          "6": 0.088199,
+          "7": 0.01185,
+          "8": 0.00134,
+          "9": 0.000356
+        }
+      }
+    },
+    {
+      "index": 26,
+      "true_label": 4,
+      "true_class": "deer",
+      "clean_pred": 4,
+      "clean_class": "deer",
+      "adv_pred": 2,
+      "adv_class": "bird",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 2,
+        "class_name": "bird",
+        "confidence": 0.455709,
+        "probabilities": {
+          "0": 0.029406,
+          "1": 0.000189,
+          "2": 0.455709,
+          "3": 0.086469,
+          "4": 0.341092,
+          "5": 0.059428,
+          "6": 0.006523,
+          "7": 0.01679,
+          "8": 0.004225,
+          "9": 0.00017
+        }
+      }
+    }
+  ]
+}
