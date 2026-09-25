@@ -73,8 +73,9 @@ LOG_DIR = EVIDENCE_LOGS / "pgd"
 
 def run_pgd(model: torch.nn.Module, images: torch.Tensor,
             labels: torch.Tensor, epsilon: float,
-            device: torch.device) -> dict:
+            device: torch.device, seed: int = 42) -> dict:
     """Apply PGD at the given epsilon and return predictions and results."""
+    torch.manual_seed(seed)  # fix the random start so results are reproducible
     alpha = pgd_alpha(epsilon)
     attack = torchattacks.PGD(model, eps=epsilon, alpha=alpha, steps=STEPS)
 
