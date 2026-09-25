@@ -6,11 +6,7 @@
 # Deep learning — model training and adversarial example crafting
 torch==2.4.1+cpu
 torchvision==0.19.1+cpu
-
-# API server — needed to run the target locally (outside Docker)
-fastapi
-uvicorn[standard]
-python-multipart
+torchattacks==3.5.1
 
 # HTTP clients — sending crafted requests to the target API
 requests
