@@ -167,7 +167,7 @@ def save_evidence(results: dict, epsilon: float, n_save: int) -> None:
 
         saved += 1
 
-    log_path = log_dir / "api_responses.json"
+    log_path = log_dir / "attack_results.json"
     save_log({"epsilon": epsilon, "results": api_log}, log_path)
     print(f"    API log saved: {log_path}")
 
