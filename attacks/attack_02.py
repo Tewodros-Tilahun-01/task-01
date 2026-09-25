@@ -46,12 +46,14 @@ from attacks.utils import (         # noqa: E402
 # Same epsilons as FGSM so results are directly comparable
 EPSILONS = [0.01, 0.03, 0.05, 0.1]
 
-# Step size per iteration — small fraction of epsilon
-ALPHA = 0.005
-
 # Number of iterations — tested 10, 20, 30, 40 and found no significant
 # accuracy difference beyond 20, so 20 is the sweet spot for this model
 STEPS = 20
+
+# Step size per iteration — 2.5 * epsilon / steps is the standard PGD rule of thumb,
+# which keeps alpha proportional to the perturbation budget at every epsilon level
+def pgd_alpha(epsilon: float, steps: int = STEPS) -> float:
+    return 2.5 * epsilon / steps
 
 # How many images to attack
 N_IMAGES = 200
@@ -73,7 +75,8 @@ def run_pgd(model: torch.nn.Module, images: torch.Tensor,
             labels: torch.Tensor, epsilon: float,
             device: torch.device) -> dict:
     """Apply PGD at the given epsilon and return predictions and results."""
-    attack = torchattacks.PGD(model, eps=epsilon, alpha=ALPHA, steps=STEPS)
+    alpha = pgd_alpha(epsilon)
+    attack = torchattacks.PGD(model, eps=epsilon, alpha=alpha, steps=STEPS)
 
     images = images.to(device)
     labels = labels.to(device)
@@ -149,6 +152,7 @@ def save_evidence(results: dict, epsilon: float, n_save: int) -> None:
             epsilon=epsilon,
             index=i,
             out_dir=eps_dir,
+            attack_name="PGD",
         )
         print(f"    Saved comparison: {out_path.name}")
 
@@ -185,7 +189,7 @@ def main() -> None:
     print("=" * 60)
     print("  Attack 02 — PGD (Projected Gradient Descent)")
     print("=" * 60)
-    print(f"  Steps : {STEPS}  |  Alpha : {ALPHA}")
+    print(f"  Steps : {STEPS}  |  Alpha : 2.5 × ε / {STEPS} (scaled per epsilon)")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"  Device: {device}\n")
@@ -222,7 +226,7 @@ def main() -> None:
     summary_path = LOG_DIR / "pgd_summary.json"
     summary_path.parent.mkdir(parents=True, exist_ok=True)
     save_log({
-        "attack": "PGD", "steps": STEPS, "alpha": ALPHA,
+        "attack": "PGD", "steps": STEPS, "alpha": "2.5*eps/steps (scaled)",
         "n_images": N_IMAGES, "results": summary
     }, summary_path)
     print(f"  Summary saved: {summary_path}")
