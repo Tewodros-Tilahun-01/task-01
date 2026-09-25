@@ -93,10 +93,12 @@ def run_fgsm(model: torch.nn.Module, images: torch.Tensor,
     labels_list = labels.cpu().tolist()
 
     clean_acc = sum(p == t for p, t in zip(clean_preds, labels_list)) / len(labels_list)
-    adv_acc   = sum(p == t for p, t in zip(adv_preds,   labels_list)) / len(labels_list)
 
-    # success = prediction changed after the attack
-    success_rate = sum(cp != ap for cp, ap in zip(clean_preds, adv_preds)) / len(clean_preds)
+    # filter to only images the model got right on clean input
+    correct = [(cp, ap, t) for cp, ap, t in zip(clean_preds, adv_preds, labels_list) if cp == t]
+
+    adv_acc      = sum(ap == t for _, ap, t in correct) / len(correct)
+    success_rate = sum(ap != t for _, ap, t in correct) / len(correct)
 
     return {
         "clean_acc":    round(clean_acc,    4),
@@ -123,11 +125,11 @@ def save_evidence(results: dict, epsilon: float, n_save: int) -> None:
     eps_dir.mkdir(parents=True, exist_ok=True)
     log_dir.mkdir(parents=True, exist_ok=True)
 
-    # put successful attacks first so we save the most interesting ones
-    indices = sorted(
-        range(len(labels)),
-        key=lambda i: 0 if clean_preds[i] != adv_preds[i] else 1
-    )
+    # only keep images the model got right on the clean input
+    indices = [i for i in range(len(labels)) if clean_preds[i] == labels[i]]
+
+    # sort: successful attacks first
+    indices = sorted(indices, key=lambda i: 0 if clean_preds[i] != adv_preds[i] else 1)
 
     api_log = []
     saved   = 0
@@ -161,7 +163,7 @@ def save_evidence(results: dict, epsilon: float, n_save: int) -> None:
             "clean_class":    CIFAR10_CLASSES[clean_preds[i]],
             "adv_pred":       adv_preds[i],
             "adv_class":      CIFAR10_CLASSES[adv_preds[i]],
-            "attack_success": clean_preds[i] != adv_preds[i],
+            "attack_success": clean_preds[i] == labels[i] and clean_preds[i] != adv_preds[i],
             "api_response":   api_response,
         })
 
