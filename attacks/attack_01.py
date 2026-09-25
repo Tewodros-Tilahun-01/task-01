@@ -18,9 +18,6 @@ Note: start the target container first if you want API evidence.
 import pathlib
 import sys
 
-import matplotlib
-matplotlib.use("Agg") # no display required — saves to file
-import matplotlib.pyplot as plt
 import torch
 import torchattacks
 
@@ -36,6 +33,7 @@ from attacks.utils import (         # noqa: E402
     EVIDENCE_LOGS,
     get_test_loader,
     load_model,
+    plot_results,
     save_comparison,
     save_log,
     send_to_api,
@@ -174,49 +172,6 @@ def save_evidence(results: dict, epsilon: float, n_save: int) -> None:
     print(f"    API log saved: {log_path}")
 
 
-def plot_results(summary: list[dict]) -> None:
-    """Save two plots: success rate vs epsilon and accuracy vs epsilon."""
-    ADV_DIR.mkdir(parents=True, exist_ok=True)
-
-    epsilons      = [r["epsilon"]      for r in summary]
-    success_rates = [r["success_rate"] for r in summary]
-    clean_accs    = [r["clean_acc"]    for r in summary]
-    adv_accs      = [r["adv_acc"]      for r in summary]
-
-    # plot 1 — success rate
-    fig, ax = plt.subplots(figsize=(7, 4))
-    ax.plot(epsilons, success_rates, marker="o", color="red", linewidth=2)
-    ax.set_xlabel("Epsilon")
-    ax.set_ylabel("Attack success rate")
-    ax.set_title("FGSM — Attack Success Rate vs Epsilon")
-    ax.set_ylim(0, 1)
-    ax.grid(True, alpha=0.3)
-    for x, y in zip(epsilons, success_rates):
-        ax.annotate(f"{y:.0%}", (x, y), textcoords="offset points",
-                    xytext=(0, 8), ha="center", fontsize=9)
-    fig.tight_layout()
-    path1 = ADV_DIR / "fgsm_success_rate.png"
-    fig.savefig(path1, dpi=120)
-    plt.close(fig)
-    print(f"\n  Plot saved: {path1}")
-
-    # plot 2 — clean vs adversarial accuracy
-    fig, ax = plt.subplots(figsize=(7, 4))
-    ax.plot(epsilons, clean_accs, marker="s", label="Clean accuracy",
-            color="steelblue", linewidth=2)
-    ax.plot(epsilons, adv_accs, marker="o", label="Adversarial accuracy",
-            color="red", linewidth=2)
-    ax.set_xlabel("Epsilon")
-    ax.set_ylabel("Accuracy")
-    ax.set_title("FGSM — Clean vs Adversarial Accuracy")
-    ax.set_ylim(0, 1)
-    ax.legend()
-    ax.grid(True, alpha=0.3)
-    fig.tight_layout()
-    path2 = ADV_DIR / "fgsm_accuracy.png"
-    fig.savefig(path2, dpi=120)
-    plt.close(fig)
-    print(f"  Plot saved: {path2}")
 
 
 # ---------------------------------------------------------------------------
@@ -265,7 +220,7 @@ def main() -> None:
     save_log({"attack": "FGSM", "n_images": N_IMAGES, "results": summary}, summary_path)
     print(f"  Summary saved: {summary_path}")
 
-    plot_results(summary)
+    plot_results(summary, "FGSM", ADV_DIR)
 
     # print final table
     print("\n" + "=" * 60)

@@ -187,3 +187,54 @@ def save_log(data: dict, path: pathlib.Path) -> None:
     """Save data as a JSON file."""
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2))
+
+
+def plot_results(summary: list[dict], attack_name: str, out_dir: pathlib.Path) -> None:
+    """Save two plots: success rate vs epsilon and accuracy vs epsilon."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    epsilons      = [r["epsilon"]      for r in summary]
+    success_rates = [r["success_rate"] for r in summary]
+    clean_accs    = [r["clean_acc"]    for r in summary]
+    adv_accs      = [r["adv_acc"]      for r in summary]
+
+    prefix = attack_name.lower()
+
+    # plot 1 — success rate
+    fig, ax = plt.subplots(figsize=(7, 4))
+    ax.plot(epsilons, success_rates, marker="o", color="red", linewidth=2)
+    ax.set_xlabel("Epsilon")
+    ax.set_ylabel("Attack success rate")
+    ax.set_title(f"{attack_name} — Attack Success Rate vs Epsilon")
+    ax.set_ylim(0, 1)
+    ax.grid(True, alpha=0.3)
+    for x, y in zip(epsilons, success_rates):
+        ax.annotate(f"{y:.0%}", (x, y), textcoords="offset points",
+                    xytext=(0, 8), ha="center", fontsize=9)
+    fig.tight_layout()
+    path1 = out_dir / f"{prefix}_success_rate.png"
+    fig.savefig(path1, dpi=120)
+    plt.close(fig)
+    print(f"\n  Plot saved: {path1}")
+
+    # plot 2 — clean vs adversarial accuracy
+    fig, ax = plt.subplots(figsize=(7, 4))
+    ax.plot(epsilons, clean_accs, marker="s", label="Clean accuracy",
+            color="steelblue", linewidth=2)
+    ax.plot(epsilons, adv_accs, marker="o", label="Adversarial accuracy",
+            color="red", linewidth=2)
+    ax.set_xlabel("Epsilon")
+    ax.set_ylabel("Accuracy")
+    ax.set_title(f"{attack_name} — Clean vs Adversarial Accuracy")
+    ax.set_ylim(0, 1)
+    ax.legend()
+    ax.grid(True, alpha=0.3)
+    fig.tight_layout()
+    path2 = out_dir / f"{prefix}_accuracy.png"
+    fig.savefig(path2, dpi=120)
+    plt.close(fig)
+    print(f"  Plot saved: {path2}")
