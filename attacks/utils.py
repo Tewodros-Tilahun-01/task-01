@@ -138,6 +138,7 @@ def save_comparison(
     index: int,
     out_dir: pathlib.Path,
     scale: int = 256,
+    attack_name: str = "",
 ) -> pathlib.Path:
     """Save a side-by-side image showing the clean and adversarial version."""
     import matplotlib
@@ -164,8 +165,9 @@ def save_comparison(
     axes[1].axis("off")
 
     changed = clean_pred != adv_pred
+    prefix  = f"[{attack_name}] " if attack_name else ""
     fig.suptitle(
-        "Attack SUCCESS ✓" if changed else "Attack failed ✗",
+        f"{prefix}Attack SUCCESS ✓" if changed else f"{prefix}Attack failed ✗",
         fontsize=10,
         color="red" if changed else "gray",
     )

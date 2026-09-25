@@ -145,6 +145,7 @@ def save_evidence(results: dict, epsilon: float, n_save: int) -> None:
             epsilon=epsilon,
             index=i,
             out_dir=eps_dir,
+            attack_name="FGSM",
         )
         print(f"    Saved comparison: {out_path.name}")
 
