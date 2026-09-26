@@ -39,6 +39,7 @@ from attacks.utils import (         # noqa: E402
     plot_results,
     save_comparison,
     save_log,
+    save_per_class_analysis,
     send_to_api,
 )
 
@@ -204,7 +205,7 @@ def main() -> None:
     print(f"\nRunning FGSM at epsilons: {EPSILONS}\n")
 
     for epsilon in EPSILONS:
-        print(f"  ε = { epsilon_to_str(epsilon)}")
+        print(f"  ε = {epsilon_to_str(epsilon)}")
         results = run_fgsm(model, images, labels, epsilon, device)
 
         print(f"    Clean accuracy  : {results['clean_acc']:.2%}")
@@ -212,6 +213,18 @@ def main() -> None:
         print(f"    Attack success  : {results['success_rate']:.2%}")
 
         save_evidence(results, epsilon, n_save=N_SAVE)
+        
+        # Save per-class analysis only for standard epsilon (8/255)
+        if abs(epsilon - 8/255) < 1e-9:
+            per_class_path = save_per_class_analysis(
+                labels=results['labels'],
+                clean_preds=results['clean_preds'],
+                adv_preds=results['adv_preds'],
+                epsilon=epsilon,
+                attack_name="FGSM",
+                out_dir=LOG_DIR,
+            )
+            print(f"    Per-class: {per_class_path.name}")
 
         summary.append({
             "epsilon":      epsilon,

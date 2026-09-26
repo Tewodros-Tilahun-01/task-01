@@ -229,6 +229,78 @@ def save_log(data: dict, path: pathlib.Path) -> None:
     path.write_text(json.dumps(data, indent=2))
 
 
+# ---------------------------------------------------------------------------
+# Analysis helpers
+# ---------------------------------------------------------------------------
+
+def calculate_per_class_stats(
+    labels: list[int],
+    clean_preds: list[int],
+    adv_preds: list[int],
+) -> list[dict]:
+    """Calculate per-class accuracy and attack success rate."""
+    stats = []
+    
+    for class_id in range(10):
+        class_indices = [i for i, label in enumerate(labels) if label == class_id]
+        total = len(class_indices)
+        
+        if total == 0:
+            stats.append({
+                "class_id": class_id,
+                "class_name": CIFAR10_CLASSES[class_id],
+                "total_samples": 0,
+                "clean_correct": 0,
+                "adv_correct": 0,
+                "clean_accuracy": 0.0,
+                "adv_accuracy": 0.0,
+                "success_rate": 0.0,
+            })
+            continue
+        
+        clean_correct = sum(1 for i in class_indices if clean_preds[i] == labels[i])
+        adv_correct = sum(1 for i in class_indices if adv_preds[i] == labels[i])
+        success_rate = (clean_correct - adv_correct) / clean_correct if clean_correct > 0 else 0.0
+        
+        stats.append({
+            "class_id": class_id,
+            "class_name": CIFAR10_CLASSES[class_id],
+            "total_samples": total,
+            "clean_correct": clean_correct,
+            "adv_correct": adv_correct,
+            "clean_accuracy": round(clean_correct / total, 4),
+            "adv_accuracy": round(adv_correct / total, 4),
+            "success_rate": round(success_rate, 4),
+        })
+    
+    return stats
+
+
+def save_per_class_analysis(
+    labels: list[int],
+    clean_preds: list[int],
+    adv_preds: list[int],
+    epsilon: float,
+    attack_name: str,
+    out_dir: pathlib.Path,
+) -> pathlib.Path:
+    """Calculate and save per-class statistics to JSON."""
+    stats = calculate_per_class_stats(labels, clean_preds, adv_preds)
+    
+    data = {
+        "attack": attack_name.upper(),
+        "epsilon": epsilon_to_str(epsilon),
+        "epsilon_float": epsilon,
+        "per_class_analysis": stats,
+    }
+    
+    eps_str = epsilon_to_str(epsilon, for_filename=True)
+    out_path = out_dir / f"{attack_name.lower()}_per_class_eps{eps_str}.json"
+    
+    save_log(data, out_path)
+    return out_path
+
+
 def plot_results(summary: list[dict], attack_name: str, out_dir: pathlib.Path) -> None:
     """Save two plots: success rate vs epsilon and accuracy vs epsilon."""
     import matplotlib
