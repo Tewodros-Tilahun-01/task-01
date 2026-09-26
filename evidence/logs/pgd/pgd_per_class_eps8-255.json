@@ -1,0 +1,107 @@
+{
+  "attack": "PGD",
+  "epsilon": "8/255",
+  "epsilon_float": 0.03137254901960784,
+  "per_class_analysis": [
+    {
+      "class_id": 0,
+      "class_name": "airplane",
+      "total_samples": 20,
+      "clean_correct": 17,
+      "adv_correct": 0,
+      "clean_accuracy": 0.85,
+      "adv_accuracy": 0.0,
+      "success_rate": 1.0
+    },
+    {
+      "class_id": 1,
+      "class_name": "automobile",
+      "total_samples": 14,
+      "clean_correct": 14,
+      "adv_correct": 0,
+      "clean_accuracy": 1.0,
+      "adv_accuracy": 0.0,
+      "success_rate": 1.0
+    },
+    {
+      "class_id": 2,
+      "class_name": "bird",
+      "total_samples": 21,
+      "clean_correct": 15,
+      "adv_correct": 0,
+      "clean_accuracy": 0.7143,
+      "adv_accuracy": 0.0,
+      "success_rate": 1.0
+    },
+    {
+      "class_id": 3,
+      "class_name": "cat",
+      "total_samples": 19,
+      "clean_correct": 14,
+      "adv_correct": 0,
+      "clean_accuracy": 0.7368,
+      "adv_accuracy": 0.0,
+      "success_rate": 1.0
+    },
+    {
+      "class_id": 4,
+      "class_name": "deer",
+      "total_samples": 15,
+      "clean_correct": 11,
+      "adv_correct": 0,
+      "clean_accuracy": 0.7333,
+      "adv_accuracy": 0.0,
+      "success_rate": 1.0
+    },
+    {
+      "class_id": 5,
+      "class_name": "dog",
+      "total_samples": 18,
+      "clean_correct": 13,
+      "adv_correct": 0,
+      "clean_accuracy": 0.7222,
+      "adv_accuracy": 0.0,
+      "success_rate": 1.0
+    },
+    {
+      "class_id": 6,
+      "class_name": "frog",
+      "total_samples": 26,
+      "clean_correct": 21,
+      "adv_correct": 0,
+      "clean_accuracy": 0.8077,
+      "adv_accuracy": 0.0,
+      "success_rate": 1.0
+    },
+    {
+      "class_id": 7,
+      "class_name": "horse",
+      "total_samples": 18,
+      "clean_correct": 15,
+      "adv_correct": 0,
+      "clean_accuracy": 0.8333,
+      "adv_accuracy": 0.0,
+      "success_rate": 1.0
+    },
+    {
+      "class_id": 8,
+      "class_name": "ship",
+      "total_samples": 28,
+      "clean_correct": 27,
+      "adv_correct": 0,
+      "clean_accuracy": 0.9643,
+      "adv_accuracy": 0.0,
+      "success_rate": 1.0
+    },
+    {
+      "class_id": 9,
+      "class_name": "truck",
+      "total_samples": 21,
+      "clean_correct": 20,
+      "adv_correct": 0,
+      "clean_accuracy": 0.9524,
+      "adv_accuracy": 0.0,
+      "success_rate": 1.0
+    }
+  ]
+}
