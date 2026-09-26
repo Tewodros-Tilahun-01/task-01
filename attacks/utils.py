@@ -43,17 +43,35 @@ CIFAR10_CLASSES = [
 # Helper functions
 # ---------------------------------------------------------------------------
 
-def epsilon_to_str(epsilon: float) -> str:
+def epsilon_to_str(epsilon: float, for_filename: bool = False) -> str:
     """
-    Convert epsilon float to clean string for folder/file names.
+    Convert epsilon float to clean string.
     
-    Detects common fractions (N/255) and formats as 'N-255'.
-    Falls back to rounded decimal for other values.
+    Detects common fractions (N/255) and formats as:
+    - 'N/255' when for_filename=False (default, for plots/display)
+    - 'N-255' when for_filename=True (safe for files/folders)
+    
+    Falls back to 3 decimal places for other values.
     """
     # Check if it's a common N/255 fraction
     for n in [1, 2, 4, 8, 16, 32, 64, 128]:
         if abs(epsilon - n/255) < 1e-9:
-            return f"{n}-255"
+            separator = "-" if for_filename else "/"
+            return f"{n}{separator}255"
+    # Fallback to 3 decimal places
+    return f"{epsilon:.3f}"
+
+
+def epsilon_to_display(epsilon: float) -> str:
+    """
+    Convert epsilon float to display string for plots/UI.
+    
+    Shows fractions as 'N/255' for readability in plots.
+    """
+    # Check if it's a common N/255 fraction
+    for n in [1, 2, 4, 8, 16, 32, 64, 128]:
+        if abs(epsilon - n/255) < 1e-9:
+            return f"{n}/255"
     # Fallback to 3 decimal places
     return f"{epsilon:.3f}"
 
@@ -180,7 +198,7 @@ def save_comparison(
     axes[0].axis("off")
 
     axes[1].imshow(np.array(adv_pil))
-    eps_str = epsilon_to_str(epsilon)
+    eps_str = epsilon_to_str(epsilon, for_filename=True)
     axes[1].set_title(f"Adversarial (ε={eps_str})\nTrue: {true_name}\nPred: {adv_name}", fontsize=9)
     axes[1].axis("off")
 
@@ -220,43 +238,55 @@ def plot_results(summary: list[dict], attack_name: str, out_dir: pathlib.Path) -
     out_dir.mkdir(parents=True, exist_ok=True)
 
     epsilons      = [r["epsilon"]      for r in summary]
+    epsilon_strs  = [epsilon_to_str(r["epsilon"]) for r in summary]  # Default: for_filename=False
     success_rates = [r["success_rate"] for r in summary]
     clean_accs    = [r["clean_acc"]    for r in summary]
     adv_accs      = [r["adv_acc"]      for r in summary]
+    
+    # Use x-axis positions 0, 1, 2, 3 for clean categorical display
+    x_pos = list(range(len(epsilon_strs)))
 
     prefix = attack_name.lower()
 
     # plot 1 — success rate
-    fig, ax = plt.subplots(figsize=(7, 4))
-    ax.plot(epsilons, success_rates, marker="o", color="red", linewidth=2)
-    ax.set_xlabel("Epsilon")
-    ax.set_ylabel("Attack success rate")
-    ax.set_title(f"{attack_name} — Attack Success Rate vs Epsilon")
-    ax.set_ylim(0, 1)
-    ax.grid(True, alpha=0.3)
-    for x, y in zip(epsilons, success_rates):
-        ax.annotate(f"{y:.0%}", (x, y), textcoords="offset points",
-                    xytext=(0, 8), ha="center", fontsize=9)
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.plot(x_pos, success_rates, marker="o", color="red", linewidth=2, markersize=8)
+    ax.set_xlabel("Epsilon", fontsize=11)
+    ax.set_ylabel("Attack Success Rate", fontsize=11)
+    ax.set_title(f"{attack_name} — Attack Success Rate vs Epsilon", fontsize=12, fontweight="bold")
+    ax.set_ylim(-0.05, 1.05)
+    ax.set_xticks(x_pos)
+    ax.set_xticklabels(epsilon_strs)
+    ax.grid(True, alpha=0.3, linestyle="--")
+    
+    # Annotate with better positioning
+    for i, (x, y) in enumerate(zip(x_pos, success_rates)):
+        offset_y = 10 if y < 0.95 else -20  # Move label down if near top
+        ax.annotate(f"{y:.1%}", (x, y), textcoords="offset points",
+                    xytext=(0, offset_y), ha="center", fontsize=10, fontweight="bold",
+                    bbox=dict(boxstyle="round,pad=0.3", facecolor="white", edgecolor="red", alpha=0.7))
     fig.tight_layout()
     path1 = out_dir / f"{prefix}_success_rate.png"
-    fig.savefig(path1, dpi=120)
+    fig.savefig(path1, dpi=150)
     plt.close(fig)
     print(f"\n  Plot saved: {path1}")
 
     # plot 2 — clean vs adversarial accuracy
-    fig, ax = plt.subplots(figsize=(7, 4))
-    ax.plot(epsilons, clean_accs, marker="s", label="Clean accuracy",
-            color="steelblue", linewidth=2)
-    ax.plot(epsilons, adv_accs, marker="o", label="Adversarial accuracy",
-            color="red", linewidth=2)
-    ax.set_xlabel("Epsilon")
-    ax.set_ylabel("Accuracy")
-    ax.set_title(f"{attack_name} — Clean vs Adversarial Accuracy")
-    ax.set_ylim(0, 1)
-    ax.legend()
-    ax.grid(True, alpha=0.3)
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.plot(x_pos, clean_accs, marker="s", label="Clean accuracy",
+            color="steelblue", linewidth=2, markersize=8)
+    ax.plot(x_pos, adv_accs, marker="o", label="Adversarial accuracy",
+            color="red", linewidth=2, markersize=8)
+    ax.set_xlabel("Epsilon", fontsize=11)
+    ax.set_ylabel("Accuracy", fontsize=11)
+    ax.set_title(f"{attack_name} — Clean vs Adversarial Accuracy", fontsize=12, fontweight="bold")
+    ax.set_ylim(-0.05, 1.05)
+    ax.set_xticks(x_pos)
+    ax.set_xticklabels(epsilon_strs)
+    ax.legend(fontsize=10, loc="best")
+    ax.grid(True, alpha=0.3, linestyle="--")
     fig.tight_layout()
     path2 = out_dir / f"{prefix}_accuracy.png"
-    fig.savefig(path2, dpi=120)
+    fig.savefig(path2, dpi=150)
     plt.close(fig)
     print(f"  Plot saved: {path2}")

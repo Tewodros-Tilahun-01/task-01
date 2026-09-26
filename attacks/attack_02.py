@@ -124,7 +124,7 @@ def save_evidence(results: dict, epsilon: float, n_save: int) -> None:
     clean_preds = results["clean_preds"]
     adv_preds   = results["adv_preds"]
 
-    eps_str = epsilon_to_str(epsilon)
+    eps_str = epsilon_to_str(epsilon, for_filename=True)
     eps_dir = ADV_DIR / f"eps_{eps_str}"
     log_dir = LOG_DIR / f"eps_{eps_str}"
     eps_dir.mkdir(parents=True, exist_ok=True)
@@ -212,7 +212,7 @@ def main() -> None:
     print(f"\nRunning PGD at epsilons: {EPSILONS}\n")
 
     for epsilon in EPSILONS:
-        print(f"  ε = {epsilon}")
+        print(f"  ε = { epsilon_to_str(epsilon)}")
         results = run_pgd(model, images, labels, epsilon, device)
 
         print(f"    Clean accuracy  : {results['clean_acc']:.2%}")
