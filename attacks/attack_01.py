@@ -33,6 +33,7 @@ from attacks.utils import (         # noqa: E402
     EVIDENCE_LOGS,
     MEAN,
     STD,
+    epsilon_to_str,
     get_test_loader,
     load_model,
     plot_results,
@@ -122,8 +123,9 @@ def save_evidence(results: dict, epsilon: float, n_save: int) -> None:
     clean_preds = results["clean_preds"]
     adv_preds   = results["adv_preds"]
 
-    eps_dir = ADV_DIR / f"eps_{epsilon}"
-    log_dir = LOG_DIR / f"eps_{epsilon}"
+    eps_str = epsilon_to_str(epsilon)
+    eps_dir = ADV_DIR / f"eps_{eps_str}"
+    log_dir = LOG_DIR / f"eps_{eps_str}"
     eps_dir.mkdir(parents=True, exist_ok=True)
     log_dir.mkdir(parents=True, exist_ok=True)
 
@@ -156,7 +158,7 @@ def save_evidence(results: dict, epsilon: float, n_save: int) -> None:
         # send to API and record what it returned
         api_response = send_to_api(
             adv_images[i], url=API_URL,
-            filename=f"adv_{i:04d}_eps{epsilon}.png"
+            filename=f"adv_{i:04d}_eps{eps_str}.png"
         )
         api_log.append({
             "index":          i,
@@ -173,7 +175,7 @@ def save_evidence(results: dict, epsilon: float, n_save: int) -> None:
         saved += 1
 
     log_path = log_dir / "attack_results.json"
-    save_log({"epsilon": epsilon, "results": api_log}, log_path)
+    save_log({"epsilon": epsilon, "epsilon_str": eps_str, "results": api_log}, log_path)
     print(f"    API log saved: {log_path}")
 
 
@@ -213,6 +215,7 @@ def main() -> None:
 
         summary.append({
             "epsilon":      epsilon,
+            "epsilon_str":  epsilon_to_str(epsilon),
             "clean_acc":    results["clean_acc"],
             "adv_acc":      results["adv_acc"],
             "success_rate": results["success_rate"],
@@ -229,11 +232,11 @@ def main() -> None:
 
     # print final table
     print("\n" + "=" * 60)
-    print(f"  {'Epsilon':<10} {'Clean Acc':<14} {'Adv Acc':<14} {'Success Rate'}")
+    print(f"  {'Epsilon':<12} {'Clean Acc':<14} {'Adv Acc':<14} {'Success Rate'}")
     print("  " + "-" * 55)
     for r in summary:
         print(
-            f"  {r['epsilon']:<10}"
+            f"  {r['epsilon_str']:<12}"
             f"  {r['clean_acc']:.2%}        "
             f"  {r['adv_acc']:.2%}        "
             f"  {r['success_rate']:.2%}"

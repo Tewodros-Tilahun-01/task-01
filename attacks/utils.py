@@ -38,6 +38,25 @@ CIFAR10_CLASSES = [
     "dog", "frog", "horse", "ship", "truck",
 ]
 
+
+# ---------------------------------------------------------------------------
+# Helper functions
+# ---------------------------------------------------------------------------
+
+def epsilon_to_str(epsilon: float) -> str:
+    """
+    Convert epsilon float to clean string for folder/file names.
+    
+    Detects common fractions (N/255) and formats as 'N-255'.
+    Falls back to rounded decimal for other values.
+    """
+    # Check if it's a common N/255 fraction
+    for n in [1, 2, 4, 8, 16, 32, 64, 128]:
+        if abs(epsilon - n/255) < 1e-9:
+            return f"{n}-255"
+    # Fallback to 3 decimal places
+    return f"{epsilon:.3f}"
+
 # ---------------------------------------------------------------------------
 # Model loading
 # ---------------------------------------------------------------------------
@@ -161,7 +180,8 @@ def save_comparison(
     axes[0].axis("off")
 
     axes[1].imshow(np.array(adv_pil))
-    axes[1].set_title(f"Adversarial (ε={epsilon})\nTrue: {true_name}\nPred: {adv_name}", fontsize=9)
+    eps_str = epsilon_to_str(epsilon)
+    axes[1].set_title(f"Adversarial (ε={eps_str})\nTrue: {true_name}\nPred: {adv_name}", fontsize=9)
     axes[1].axis("off")
 
     changed = clean_pred != adv_pred
@@ -174,7 +194,7 @@ def save_comparison(
     fig.tight_layout()
 
     fname = (
-        f"{index:04d}_eps{epsilon}"
+        f"{index:04d}_eps{eps_str}"
         f"_true{true_label}"
         f"_clean{clean_pred}"
         f"_adv{adv_pred}.png"
