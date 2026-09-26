@@ -31,6 +31,8 @@ from attacks.utils import (         # noqa: E402
     CIFAR10_CLASSES,
     EVIDENCE_ADV,
     EVIDENCE_LOGS,
+    MEAN,
+    STD,
     get_test_loader,
     load_model,
     plot_results,
@@ -43,8 +45,7 @@ from attacks.utils import (         # noqa: E402
 # Configuration
 # ---------------------------------------------------------------------------
 
-# How strong the perturbation is — higher = more effective but more visible
-EPSILONS = [0.01, 0.03, 0.05, 0.1]
+EPSILONS = [2/255, 4/255, 8/255, 16/255]
 
 # How many images to attack
 N_IMAGES = 200
@@ -77,6 +78,9 @@ def run_fgsm(model: torch.nn.Module, images: torch.Tensor,
 
     """Apply FGSM at the given epsilon and return predictions and results."""
     attack = torchattacks.FGSM(model, eps=epsilon)
+    
+    # Tell torchattacks about the normalization so it handles it correctly
+    attack.set_normalization_used(mean=MEAN, std=STD)
 
     images = images.to(device)
     labels = labels.to(device)

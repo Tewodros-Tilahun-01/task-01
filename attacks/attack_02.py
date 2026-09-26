@@ -31,6 +31,8 @@ from attacks.utils import (         # noqa: E402
     CIFAR10_CLASSES,
     EVIDENCE_ADV,
     EVIDENCE_LOGS,
+    MEAN,
+    STD,
     get_test_loader,
     load_model,
     plot_results,
@@ -43,8 +45,7 @@ from attacks.utils import (         # noqa: E402
 # Configuration
 # ---------------------------------------------------------------------------
 
-# Same epsilons as FGSM so results are directly comparable
-EPSILONS = [0.01, 0.03, 0.05, 0.1]
+EPSILONS = [2/255, 4/255, 8/255, 16/255]
 
 # Number of iterations — tested 10, 20, 30, 40 and found no significant
 # accuracy difference beyond 20, so 20 is the sweet spot for this model
@@ -78,6 +79,9 @@ def run_pgd(model: torch.nn.Module, images: torch.Tensor,
     torch.manual_seed(seed)  # fix the random start so results are reproducible
     alpha = pgd_alpha(epsilon)
     attack = torchattacks.PGD(model, eps=epsilon, alpha=alpha, steps=STEPS)
+    
+    # Tell torchattacks about the normalization so it handles it correctly
+    attack.set_normalization_used(mean=MEAN, std=STD)
 
     images = images.to(device)
     labels = labels.to(device)
