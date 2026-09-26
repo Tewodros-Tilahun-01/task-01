@@ -1,0 +1,276 @@
+{
+  "epsilon": 0.01568627450980392,
+  "epsilon_str": "4-255",
+  "results": [
+    {
+      "index": 1,
+      "true_label": 8,
+      "true_class": "ship",
+      "clean_pred": 8,
+      "clean_class": "ship",
+      "adv_pred": 1,
+      "adv_class": "automobile",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 1,
+        "class_name": "automobile",
+        "confidence": 0.999477,
+        "probabilities": {
+          "0": 1e-06,
+          "1": 0.999477,
+          "2": 0.0,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0,
+          "6": 0.0,
+          "7": 0.0,
+          "8": 0.00023,
+          "9": 0.000292
+        }
+      }
+    },
+    {
+      "index": 2,
+      "true_label": 8,
+      "true_class": "ship",
+      "clean_pred": 8,
+      "clean_class": "ship",
+      "adv_pred": 1,
+      "adv_class": "automobile",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 1,
+        "class_name": "automobile",
+        "confidence": 0.973227,
+        "probabilities": {
+          "0": 0.000638,
+          "1": 0.973227,
+          "2": 3e-05,
+          "3": 2.8e-05,
+          "4": 1e-06,
+          "5": 5e-06,
+          "6": 6.2e-05,
+          "7": 2e-06,
+          "8": 0.002279,
+          "9": 0.023728
+        }
+      }
+    },
+    {
+      "index": 4,
+      "true_label": 6,
+      "true_class": "frog",
+      "clean_pred": 6,
+      "clean_class": "frog",
+      "adv_pred": 4,
+      "adv_class": "deer",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 4,
+        "class_name": "deer",
+        "confidence": 0.994205,
+        "probabilities": {
+          "0": 1.6e-05,
+          "1": 0.0,
+          "2": 0.003126,
+          "3": 0.000791,
+          "4": 0.994205,
+          "5": 9.1e-05,
+          "6": 0.001762,
+          "7": 8e-06,
+          "8": 0.0,
+          "9": 0.0
+        }
+      }
+    },
+    {
+      "index": 5,
+      "true_label": 6,
+      "true_class": "frog",
+      "clean_pred": 6,
+      "clean_class": "frog",
+      "adv_pred": 5,
+      "adv_class": "dog",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 5,
+        "class_name": "dog",
+        "confidence": 0.478591,
+        "probabilities": {
+          "0": 0.000354,
+          "1": 0.000168,
+          "2": 0.004187,
+          "3": 0.424772,
+          "4": 0.00432,
+          "5": 0.478591,
+          "6": 0.008243,
+          "7": 0.07233,
+          "8": 0.000379,
+          "9": 0.006655
+        }
+      }
+    },
+    {
+      "index": 6,
+      "true_label": 1,
+      "true_class": "automobile",
+      "clean_pred": 1,
+      "clean_class": "automobile",
+      "adv_pred": 9,
+      "adv_class": "truck",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 9,
+        "class_name": "truck",
+        "confidence": 0.71139,
+        "probabilities": {
+          "0": 0.010877,
+          "1": 0.069278,
+          "2": 0.014758,
+          "3": 0.081906,
+          "4": 0.001346,
+          "5": 0.057513,
+          "6": 0.026607,
+          "7": 0.021611,
+          "8": 0.004714,
+          "9": 0.71139
+        }
+      }
+    },
+    {
+      "index": 8,
+      "true_label": 3,
+      "true_class": "cat",
+      "clean_pred": 3,
+      "clean_class": "cat",
+      "adv_pred": 5,
+      "adv_class": "dog",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 5,
+        "class_name": "dog",
+        "confidence": 0.377395,
+        "probabilities": {
+          "0": 5.6e-05,
+          "1": 1e-06,
+          "2": 0.05233,
+          "3": 0.054006,
+          "4": 0.245111,
+          "5": 0.377395,
+          "6": 0.002547,
+          "7": 0.26855,
+          "8": 1e-06,
+          "9": 3e-06
+        }
+      }
+    },
+    {
+      "index": 9,
+      "true_label": 1,
+      "true_class": "automobile",
+      "clean_pred": 1,
+      "clean_class": "automobile",
+      "adv_pred": 9,
+      "adv_class": "truck",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 9,
+        "class_name": "truck",
+        "confidence": 0.985727,
+        "probabilities": {
+          "0": 0.002042,
+          "1": 0.003982,
+          "2": 0.000695,
+          "3": 0.002723,
+          "4": 5e-05,
+          "5": 0.000202,
+          "6": 0.002279,
+          "7": 0.000316,
+          "8": 0.001983,
+          "9": 0.985727
+        }
+      }
+    },
+    {
+      "index": 10,
+      "true_label": 0,
+      "true_class": "airplane",
+      "clean_pred": 0,
+      "clean_class": "airplane",
+      "adv_pred": 5,
+      "adv_class": "dog",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 5,
+        "class_name": "dog",
+        "confidence": 0.431664,
+        "probabilities": {
+          "0": 0.00074,
+          "1": 2.1e-05,
+          "2": 0.006998,
+          "3": 0.137629,
+          "4": 0.256855,
+          "5": 0.431664,
+          "6": 0.001903,
+          "7": 0.163985,
+          "8": 0.000164,
+          "9": 4.1e-05
+        }
+      }
+    },
+    {
+      "index": 12,
+      "true_label": 5,
+      "true_class": "dog",
+      "clean_pred": 5,
+      "clean_class": "dog",
+      "adv_pred": 4,
+      "adv_class": "deer",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 4,
+        "class_name": "deer",
+        "confidence": 0.968589,
+        "probabilities": {
+          "0": 3.4e-05,
+          "1": 2e-06,
+          "2": 0.007605,
+          "3": 0.003427,
+          "4": 0.968589,
+          "5": 0.004228,
+          "6": 0.008371,
+          "7": 0.007739,
+          "8": 1e-06,
+          "9": 4e-06
+        }
+      }
+    },
+    {
+      "index": 13,
+      "true_label": 7,
+      "true_class": "horse",
+      "clean_pred": 7,
+      "clean_class": "horse",
+      "adv_pred": 5,
+      "adv_class": "dog",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 5,
+        "class_name": "dog",
+        "confidence": 0.599886,
+        "probabilities": {
+          "0": 0.000828,
+          "1": 0.00075,
+          "2": 0.007407,
+          "3": 0.290593,
+          "4": 0.005359,
+          "5": 0.599886,
+          "6": 0.002734,
+          "7": 0.088039,
+          "8": 0.000368,
+          "9": 0.004035
+        }
+      }
+    }
+  ]
+}
