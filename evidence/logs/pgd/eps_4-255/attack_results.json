@@ -1,0 +1,276 @@
+{
+  "epsilon": 0.01568627450980392,
+  "epsilon_str": "4-255",
+  "results": [
+    {
+      "index": 0,
+      "true_label": 3,
+      "true_class": "cat",
+      "clean_pred": 3,
+      "clean_class": "cat",
+      "adv_pred": 8,
+      "adv_class": "ship",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 8,
+        "class_name": "ship",
+        "confidence": 0.999109,
+        "probabilities": {
+          "0": 0.000193,
+          "1": 0.000178,
+          "2": 2.3e-05,
+          "3": 0.00036,
+          "4": 4e-06,
+          "5": 1.4e-05,
+          "6": 4.9e-05,
+          "7": 3e-06,
+          "8": 0.999109,
+          "9": 6.7e-05
+        }
+      }
+    },
+    {
+      "index": 1,
+      "true_label": 8,
+      "true_class": "ship",
+      "clean_pred": 8,
+      "clean_class": "ship",
+      "adv_pred": 1,
+      "adv_class": "automobile",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 1,
+        "class_name": "automobile",
+        "confidence": 0.999974,
+        "probabilities": {
+          "0": 0.0,
+          "1": 0.999974,
+          "2": 0.0,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0,
+          "6": 0.0,
+          "7": 0.0,
+          "8": 0.0,
+          "9": 2.6e-05
+        }
+      }
+    },
+    {
+      "index": 2,
+      "true_label": 8,
+      "true_class": "ship",
+      "clean_pred": 8,
+      "clean_class": "ship",
+      "adv_pred": 1,
+      "adv_class": "automobile",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 1,
+        "class_name": "automobile",
+        "confidence": 0.999377,
+        "probabilities": {
+          "0": 0.0,
+          "1": 0.999377,
+          "2": 0.0,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0,
+          "6": 0.0,
+          "7": 0.0,
+          "8": 1e-06,
+          "9": 0.000622
+        }
+      }
+    },
+    {
+      "index": 4,
+      "true_label": 6,
+      "true_class": "frog",
+      "clean_pred": 6,
+      "clean_class": "frog",
+      "adv_pred": 4,
+      "adv_class": "deer",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 4,
+        "class_name": "deer",
+        "confidence": 0.999894,
+        "probabilities": {
+          "0": 0.0,
+          "1": 0.0,
+          "2": 7.7e-05,
+          "3": 1.5e-05,
+          "4": 0.999894,
+          "5": 3e-06,
+          "6": 8e-06,
+          "7": 2e-06,
+          "8": 0.0,
+          "9": 0.0
+        }
+      }
+    },
+    {
+      "index": 5,
+      "true_label": 6,
+      "true_class": "frog",
+      "clean_pred": 6,
+      "clean_class": "frog",
+      "adv_pred": 5,
+      "adv_class": "dog",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 5,
+        "class_name": "dog",
+        "confidence": 0.931504,
+        "probabilities": {
+          "0": 2e-06,
+          "1": 1e-06,
+          "2": 7.8e-05,
+          "3": 0.03655,
+          "4": 5.2e-05,
+          "5": 0.931504,
+          "6": 1.4e-05,
+          "7": 0.031769,
+          "8": 0.0,
+          "9": 3e-05
+        }
+      }
+    },
+    {
+      "index": 6,
+      "true_label": 1,
+      "true_class": "automobile",
+      "clean_pred": 1,
+      "clean_class": "automobile",
+      "adv_pred": 5,
+      "adv_class": "dog",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 5,
+        "class_name": "dog",
+        "confidence": 0.452906,
+        "probabilities": {
+          "0": 0.004008,
+          "1": 0.000877,
+          "2": 0.019618,
+          "3": 0.447696,
+          "4": 0.005134,
+          "5": 0.452906,
+          "6": 0.019104,
+          "7": 0.039248,
+          "8": 0.001521,
+          "9": 0.009888
+        }
+      }
+    },
+    {
+      "index": 8,
+      "true_label": 3,
+      "true_class": "cat",
+      "clean_pred": 3,
+      "clean_class": "cat",
+      "adv_pred": 7,
+      "adv_class": "horse",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 7,
+        "class_name": "horse",
+        "confidence": 0.993668,
+        "probabilities": {
+          "0": 0.0,
+          "1": 0.0,
+          "2": 6e-05,
+          "3": 9e-05,
+          "4": 0.002338,
+          "5": 0.003844,
+          "6": 0.0,
+          "7": 0.993668,
+          "8": 0.0,
+          "9": 0.0
+        }
+      }
+    },
+    {
+      "index": 9,
+      "true_label": 1,
+      "true_class": "automobile",
+      "clean_pred": 1,
+      "clean_class": "automobile",
+      "adv_pred": 9,
+      "adv_class": "truck",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 9,
+        "class_name": "truck",
+        "confidence": 0.999976,
+        "probabilities": {
+          "0": 5e-06,
+          "1": 1.9e-05,
+          "2": 0.0,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0,
+          "6": 0.0,
+          "7": 0.0,
+          "8": 1e-06,
+          "9": 0.999976
+        }
+      }
+    },
+    {
+      "index": 10,
+      "true_label": 0,
+      "true_class": "airplane",
+      "clean_pred": 0,
+      "clean_class": "airplane",
+      "adv_pred": 5,
+      "adv_class": "dog",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 5,
+        "class_name": "dog",
+        "confidence": 0.875187,
+        "probabilities": {
+          "0": 1e-06,
+          "1": 0.0,
+          "2": 0.000235,
+          "3": 0.093198,
+          "4": 0.013719,
+          "5": 0.875187,
+          "6": 0.000106,
+          "7": 0.017553,
+          "8": 1e-06,
+          "9": 0.0
+        }
+      }
+    },
+    {
+      "index": 11,
+      "true_label": 9,
+      "true_class": "truck",
+      "clean_pred": 9,
+      "clean_class": "truck",
+      "adv_pred": 1,
+      "adv_class": "automobile",
+      "attack_success": true,
+      "api_response": {
+        "predicted_class": 1,
+        "class_name": "automobile",
+        "confidence": 0.977197,
+        "probabilities": {
+          "0": 3e-06,
+          "1": 0.977197,
+          "2": 0.0,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0,
+          "6": 0.0,
+          "7": 0.0,
+          "8": 6e-06,
+          "9": 0.022794
+        }
+      }
+    }
+  ]
+}
