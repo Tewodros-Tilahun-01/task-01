@@ -65,13 +65,7 @@ LOG_DIR = EVIDENCE_LOGS / "fgsm"
 # Functions
 # ---------------------------------------------------------------------------
 
-def accuracy(model: torch.nn.Module, images: torch.Tensor,
-             labels: torch.Tensor, device: torch.device) -> float:
 
-    """Run the model and return the fraction of correct predictions."""
-    with torch.no_grad():
-        preds = model(images.to(device)).argmax(dim=1)
-    return (preds.cpu() == labels).float().mean().item()
 
 
 def run_fgsm(model: torch.nn.Module, images: torch.Tensor,
