@@ -1,5 +1,6 @@
 # Shared dependencies — covers both training and attack scripts.
 # The Docker image uses target/requirements.txt (inference-only, no attack tools).
+# Versions pinned for supply chain security and reproducibility
 
 --extra-index-url https://download.pytorch.org/whl/cpu
 
@@ -9,18 +10,18 @@ torchvision==0.19.1+cpu
 torchattacks==3.5.1
 
 # HTTP clients — sending crafted requests to the target API
-requests
-httpx
+requests==2.25.1
+httpx==0.28.1
 
 # Image handling — loading/saving images for adversarial input crafting
-pillow
+pillow==12.3.0
 
 # Numerical computing — adversarial perturbations and data handling
-numpy
-pandas
+numpy==2.5.3
+pandas==3.0.6
 
 # ML utilities — metrics, baseline classifiers
-scikit-learn
+scikit-learn==1.9.1
 
 # Plotting — visualising attack results and perturbation magnitudes
-matplotlib
+matplotlib==3.11.2
