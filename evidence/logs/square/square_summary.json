@@ -1,0 +1,49 @@
+{
+  "attack": "Square Attack",
+  "epsilon": 0.03137254901960784,
+  "epsilon_str": "8/255",
+  "n_images": 200,
+  "query_budgets": [
+    50,
+    200,
+    500
+  ],
+  "results": [
+    {
+      "total_images": 166,
+      "successful_attacks": 71,
+      "success_rate": 0.4277,
+      "clean_acc": 1.0,
+      "adv_acc": 0.5723,
+      "avg_queries": 12.5,
+      "median_queries": 7,
+      "total_time": 58.1,
+      "query_budget": 50,
+      "total_api_calls": 6150
+    },
+    {
+      "total_images": 166,
+      "successful_attacks": 114,
+      "success_rate": 0.6867,
+      "clean_acc": 1.0,
+      "adv_acc": 0.3133,
+      "avg_queries": 42.1,
+      "median_queries": 14,
+      "total_time": 147.8,
+      "query_budget": 200,
+      "total_api_calls": 15495
+    },
+    {
+      "total_images": 166,
+      "successful_attacks": 144,
+      "success_rate": 0.8675,
+      "clean_acc": 1.0,
+      "adv_acc": 0.1325,
+      "avg_queries": 95.7,
+      "median_queries": 31,
+      "total_time": 270.6,
+      "query_budget": 500,
+      "total_api_calls": 24927
+    }
+  ]
+}
