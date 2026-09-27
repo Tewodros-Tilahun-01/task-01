@@ -1,0 +1,28 @@
+{
+  "attack": "Model Extraction",
+  "api_url": "http://localhost:8000/predict",
+  "random_seed": 42,
+  "surrogate_architecture": "RealisticSurrogate",
+  "note": "Surrogate uses different architecture than victim (realistic black-box)",
+  "queries_sent": 10000,
+  "query_time_seconds": 104.8,
+  "queries_per_second": 95.4,
+  "training": {
+    "epochs": 20,
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "final_loss": 0.4146,
+    "training_time_seconds": 398.1
+  },
+  "agreement_rate": 0.803,
+  "transferability": {
+    "attack_type": "pgd",
+    "epsilon": 0.03137254901960784,
+    "epsilon_str": "8/255",
+    "test_size": 200,
+    "success_rate": 0.8012,
+    "successes": 133,
+    "total": 166
+  },
+  "total_attack_time_seconds": 525.7
+}
