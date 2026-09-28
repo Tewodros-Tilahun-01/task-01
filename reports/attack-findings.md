@@ -61,7 +61,7 @@ adv_images = attack(images, labels)
 - Attack success: 91.62% (153 out of 167 correctly classified images flipped)
 - Adversarial accuracy: 8.38%
 - Model nearly completely fails
-- Observation: **Zero adversarial robustness** at this threshold
+- Observation: **near-zero adversarial robustness** at this threshold
 
 **Epsilon = 16/255 (Visible)**
 - Attack success: 91.02% (152 out of 167 correctly classified images flipped)
@@ -660,7 +660,7 @@ Shows loss decreasing over 20 epochs—surrogate successfully learned from victi
 **Current Training:**
 ```python
 # Model trained only on clean CIFAR-10 data
-for epoch in range(50):
+for epoch in range(20):
     for images, labels in train_loader:
         outputs = model(images)
         loss = criterion(outputs, labels)
@@ -670,7 +670,7 @@ for epoch in range(50):
 
 **Issue:** Model never sees adversarial examples during training, so it learns decision boundaries optimized for clean data only.
 
-**Impact:** Zero adversarial robustness
+**Impact:** near-zero adversarial robustness
 
 #### 2. Standard CNN Architecture
 
