@@ -109,13 +109,12 @@ def run_square_attack(model_wrapper, images, labels, query_budget, device):
     attack.set_normalization_used(mean=MEAN, std=STD)
     
     results = []
+    successful_count = 0
+    processed_count = 0
     
     for i in range(len(images)):
         image = images[i:i+1].to(device)
         label = labels[i:i+1].to(device)
-        
-        print(f"    Image {i:2d} (true={labels[i].item()}, {CIFAR10_CLASSES[labels[i].item()]:>10s}): ", 
-              end="", flush=True)
         
         img_start = model_wrapper.query_count
         
@@ -125,8 +124,12 @@ def run_square_attack(model_wrapper, images, labels, query_budget, device):
         
         # only attack images the model got right
         if clean_pred != labels[i].item():
-            print(f"SKIP (already wrong: pred={clean_pred}/{CIFAR10_CLASSES[clean_pred]})")
+            # Only print skips occasionally to avoid clutter
+            if (i + 1) % 20 == 0 or i == 0:
+                print(f"    [{i+1:3d}/{len(images)}] Image {i:2d} (true={labels[i].item()}, {CIFAR10_CLASSES[labels[i].item()]:>10s}): SKIP (already wrong: pred={clean_pred}/{CIFAR10_CLASSES[clean_pred]})")
             continue
+        
+        processed_count += 1
         
         # run attack
         start_time = time.time()
@@ -140,6 +143,9 @@ def run_square_attack(model_wrapper, images, labels, query_budget, device):
         # total queries includes: clean check + attack queries + final check
         queries = model_wrapper.query_count - img_start
         success = (adv_pred != labels[i].item())
+        
+        if success:
+            successful_count += 1
         
         results.append({
             "index": i,
@@ -156,10 +162,11 @@ def run_square_attack(model_wrapper, images, labels, query_budget, device):
             "elapsed_time": elapsed,
         })
         
-        if success:
-            print(f"SUCCESS in {queries:4d} queries (pred: {adv_pred}/{CIFAR10_CLASSES[adv_pred]:>10s}) [{elapsed:.1f}s]")
-        else:
-            print(f"FAILED  after {queries:4d} queries (pred: {adv_pred}/{CIFAR10_CLASSES[adv_pred]:>10s}) [{elapsed:.1f}s]")
+        # Print every 20 images or on first/last image
+        if processed_count % 20 == 0 or processed_count == 1 or i == len(images) - 1:
+            status = "SUCCESS" if success else "FAILED "
+            status_word = "in" if success else "after"
+            print(f"    [{i+1:3d}/{len(images)}] Image {i:2d} (true={labels[i].item()}, {CIFAR10_CLASSES[labels[i].item()]:>10s}): {status} {status_word} {queries:4d} queries (pred: {adv_pred}/{CIFAR10_CLASSES[adv_pred]:>10s}) [{elapsed:.1f}s] | Success: {successful_count}/{processed_count}")
     
     total_queries = model_wrapper.query_count - budget_start
     return results, total_queries

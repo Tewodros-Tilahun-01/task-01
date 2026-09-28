@@ -28,33 +28,39 @@ def evaluate_agreement(
     test_images = test_images[:n_samples]
     test_labels = test_labels[:n_samples]
     
-    print(f"Evaluating agreement on {len(test_images)} samples...")
-    print()
+    print(f"\nEvaluating surrogate-victim agreement...")
+    print(f"  Testing {len(test_images)} samples\n")
+    
+    # Get surrogate predictions
+    print("  Computing surrogate predictions...")
     with torch.no_grad():
         test_images_device = test_images.to(device)
         surrogate_logits = surrogate(test_images_device)
         surrogate_preds = surrogate_logits.argmax(dim=1).cpu().numpy()
+    print("    Done ✓")
+    
+    # Get victim predictions
+    print("\n  Querying victim API:")
     victim_preds = []
     errors = 0
     
-    print("Querying victim API...", end="", flush=True)
     for i, image in enumerate(test_images):
         response = send_to_api(image, url=api_url)
         
         if "error" in response:
             errors += 1
             victim_preds.append(-1)
-            continue
+        else:
+            victim_preds.append(response["predicted_class"])
         
-        victim_preds.append(response["predicted_class"])
-        if (i + 1) % 100 == 0:
-            print(f"\r  Queried {i+1}/{len(test_images)}...", end="", flush=True)
-    
-    print()
+        if (i + 1) % 100 == 0 or i + 1 == len(test_images):
+            print(f"    [{i+1:4d}/{len(test_images)}] queried", end="\r")
+    print(f"    [{len(test_images):4d}/{len(test_images)}] queried ✓")
     
     if errors > 0:
-        print(f"  Warning: {errors} API errors encountered")
+        print(f"\n    Warning: {errors} API errors encountered")
     
+    # Calculate agreement
     victim_preds = torch.tensor(victim_preds)
     surrogate_preds = torch.tensor(surrogate_preds)
     valid = victim_preds != -1
@@ -62,6 +68,7 @@ def evaluate_agreement(
     total_valid = valid.sum().item()
     
     agreement_rate = agreements / total_valid if total_valid > 0 else 0.0
+    
     print(f"\n  Agreement breakdown:")
     print(f"    Valid samples    : {total_valid}")
     print(f"    Agreements       : {agreements}")
@@ -116,9 +123,11 @@ def test_transferability(
     """Test if surrogate-crafted adversaries transfer to victim."""
     surrogate.eval()
     
-    print(f"Testing transferability on {len(adv_images)} samples...")
+    print(f"\nTesting transfer to victim API...")
+    print(f"  Testing {len(adv_images)} adversarial samples\n")
     
-    print("  Querying victim with clean images...", end="", flush=True)
+    # Query victim with clean images
+    print("  Querying clean images:")
     victim_clean_preds = []
     for i, image in enumerate(clean_images):
         response = send_to_api(image, url=api_url)
@@ -127,11 +136,12 @@ def test_transferability(
         else:
             victim_clean_preds.append(response["predicted_class"])
         
-        if (i + 1) % 50 == 0:
-            print(f"\r  Clean: {i+1}/{len(clean_images)}...", end="", flush=True)
-    print()
+        if (i + 1) % 50 == 0 or i + 1 == len(clean_images):
+            print(f"    [{i+1:3d}/{len(clean_images)}] queried", end="\r")
+    print(f"    [{len(clean_images):3d}/{len(clean_images)}] queried ✓")
     
-    print("  Querying victim with adversarial images...", end="", flush=True)
+    # Query victim with adversarial images
+    print("\n  Querying adversarial images:")
     victim_adv_preds = []
     for i, image in enumerate(adv_images):
         response = send_to_api(image, url=api_url)
@@ -140,10 +150,11 @@ def test_transferability(
         else:
             victim_adv_preds.append(response["predicted_class"])
         
-        if (i + 1) % 50 == 0:
-            print(f"\r  Adversarial: {i+1}/{len(adv_images)}...", end="", flush=True)
-    print()
+        if (i + 1) % 50 == 0 or i + 1 == len(adv_images):
+            print(f"    [{i+1:3d}/{len(adv_images)}] queried", end="\r")
+    print(f"    [{len(adv_images):3d}/{len(adv_images)}] queried ✓")
     
+    # Calculate transfer success
     victim_clean_preds = torch.tensor(victim_clean_preds)
     victim_adv_preds = torch.tensor(victim_adv_preds)
     labels = labels.cpu()
@@ -157,8 +168,9 @@ def test_transferability(
     print(f"\n  Transfer results:")
     print(f"    Victim-correct samples : {n_total}")
     print(f"    Successful transfers   : {n_successes}")
-    print(f"    Success rate           : {success_rate:.2%}")
+    print(f"    Transfer success rate  : {success_rate:.2%}")
     
+    # Save examples
     print(f"\n  Saving top {n_save} successful transfer examples...")
     success_indices = torch.where(transfer_success)[0].tolist()
     saved = 0
