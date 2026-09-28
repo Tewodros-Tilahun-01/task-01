@@ -32,13 +32,25 @@ the environment from intelligence and reconnaissance rather than privileged acce
 
 ## Documentation map
 
+### Target System Documentation
+
 | Document | Description |
 |----------|-------------|
-| [docs/architecture.md](architecture.md) | System-level diagram — target and attacker relationship |
 | [docs/target/overview.md](target/overview.md) | What the target is and the design decisions behind it |
 | [docs/target/architecture.md](target/architecture.md) | CifarCNN layer-by-layer breakdown and training details |
 | [docs/target/api.md](target/api.md) | Full REST API reference |
 | [docs/target/preprocessing.md](target/preprocessing.md) | Image preprocessing pipeline |
+| [docs/target/training.md](target/training.md) | How to train the model and generate weights |
+
+### Attack Documentation
+
+| Document | Description |
+|----------|-------------|
+| [docs/attacks/overview.md](attacks/overview.md) | Summary of all four attacks and when to use each |
+| [docs/attacks/attack-01-fgsm.md](attacks/attack-01-fgsm.md) | FGSM (Fast Gradient Sign Method) — single-step white-box |
+| [docs/attacks/attack-02-pgd.md](attacks/attack-02-pgd.md) | PGD (Projected Gradient Descent) — iterative white-box |
+| [docs/attacks/attack-03-square.md](attacks/attack-03-square.md) | Square Attack — query-efficient black-box |
+| [docs/attacks/attack-04-extraction.md](attacks/attack-04-extraction.md) | Model Extraction — black-box model stealing |
 
 ---
 

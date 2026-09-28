@@ -121,6 +121,28 @@ Example response:
 
 ---
 
+## Running Attacks
+
+**Run all four attacks sequentially:**
+
+```bash
+python -m attacks.run_all_attacks
+```
+
+**Run specific attack types:**
+
+```bash
+# White-box only (FGSM + PGD, no API needed)
+python -m attacks.run_all_attacks --whitebox
+
+# Black-box only (Square + Model Extraction, API required)
+python -m attacks.run_all_attacks --blackbox
+```
+
+See [docs/attacks/running-all-attacks.md](docs/attacks/running-all-attacks.md) for detailed usage.
+
+---
+
 ## Deliverables
 
 | # | Deliverable | Location |
@@ -137,14 +159,26 @@ Example response:
 
 Full documentation lives in [`docs/`](docs/index.md).
 
+### Target System
+
 | Document | Contents |
 |----------|----------|
 | [docs/index.md](docs/index.md) | Project overview and goals |
-| [docs/architecture.md](docs/architecture.md) | System-level diagram |
 | [docs/target/overview.md](docs/target/overview.md) | Target purpose and design decisions |
 | [docs/target/architecture.md](docs/target/architecture.md) | CifarCNN layer-by-layer breakdown |
 | [docs/target/api.md](docs/target/api.md) | REST API reference |
 | [docs/target/preprocessing.md](docs/target/preprocessing.md) | Image preprocessing pipeline |
+| [docs/target/training.md](docs/target/training.md) | Model training instructions |
+
+### Attacks
+
+| Document | Contents |
+|----------|----------|
+| [docs/attacks/overview.md](docs/attacks/overview.md) | Attack comparison and when to use each |
+| [docs/attacks/attack-01-fgsm.md](docs/attacks/attack-01-fgsm.md) | FGSM (Fast Gradient Sign Method) |
+| [docs/attacks/attack-02-pgd.md](docs/attacks/attack-02-pgd.md) | PGD (Projected Gradient Descent) |
+| [docs/attacks/attack-03-square.md](docs/attacks/attack-03-square.md) | Square Attack (Black-box) |
+| [docs/attacks/attack-04-extraction.md](docs/attacks/attack-04-extraction.md) | Model Extraction |
 
 ---
 
