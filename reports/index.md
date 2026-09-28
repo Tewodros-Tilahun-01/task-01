@@ -30,9 +30,8 @@ This report documents a comprehensive red team assessment of an AI image classif
    - Missing adversarial input detection
    - Container configuration weaknesses
    - Inadequate logging
-   - Verbose error messages
 
-5. **[Mitigations](mitigations.md)** — Remediation roadmap with 10 countermeasures mapped to MITRE ATLAS defenses and prioritized by impact
+5. **[Mitigations](mitigations.md)** — Remediation roadmap with 7 countermeasures mapped to MITRE ATLAS defenses and prioritized by impact
 
 6. **[Appendix](appendix.md)** — Supporting data, evidence index, attack scripts, environment setup,
 
