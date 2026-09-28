@@ -39,24 +39,48 @@ task-01/
 
 ## Quick-start
 
-### 1. Prerequisites
+### Option A: Automated Setup (Linux / macOS Only)
+
+Use the automated setup script to handle everything in one command:
+
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+This will:
+- Create virtual environment
+- Install all dependencies
+- Train the CIFAR-10 model
+- Build the Docker image
+- Display the run command with integrity hashes
+
+See [SETUP.md](SETUP.md) for detailed options and troubleshooting.
+
+**Windows users:** Please use Option B (Manual Setup) below.
+
+---
+
+### Option B: Manual Setup (Windows & All Platforms)
+
+#### 1. Prerequisites
 
 - Docker (for the target inference server)
-- Python 3.12 + `venv` (for the attack scripts only)
+- Python 3.8+ + `venv` (for the attack scripts only)
 
-### 2. Set up the attack environment
+#### 2. Set up the attack environment
 
 The virtual environment is needed for training the model and running the attack scripts — the target inference server runs entirely in Docker.
 
-**Linux / macOS**
+**Linux / macOS:**
 ```bash
 # From the task-01 root
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-**Windows (PowerShell)**
+**Windows (PowerShell):**
 ```powershell
 # From the task-01 root
 python -m venv .venv
@@ -64,7 +88,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### 3. Build and run the target
+#### 3. Build and run the target
 
 > If `target/weights/` is empty, train the model first — see [docs/target/training.md](docs/target/training.md).
 
@@ -92,7 +116,7 @@ The API is then available at `http://localhost:8000`.
 Interactive docs: `http://localhost:8000/docs`
 
 
-### 4. Test a prediction
+#### 4. Test a prediction
 
 **Linux / macOS**
 ```bash
