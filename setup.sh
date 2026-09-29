@@ -35,7 +35,7 @@ mkdir -p evidence/{adversarial/{fgsm,pgd,square},extraction,logs/{fgsm,pgd,squar
 mkdir -p reports video
 
 # Train model only if weights don't exist
-if [ ! -f "target/weights/cifar10_cnn.pth" ]; then
+if [ ! -f "target/weights/cifar_cnn.pth" ]; then
     echo "Training model (this will take 10-20 minutes on CPU)..."
     $PYTHON -m target.training.train
 else
@@ -43,8 +43,8 @@ else
 fi
 
 # Get hashes for Docker
-if [ -f "target/weights/cifar10_cnn.pth" ]; then
-    MODEL_SHA=$(sha256sum target/weights/cifar10_cnn.pth | awk '{print $1}')
+if [ -f "target/weights/cifar_cnn.pth" ]; then
+    MODEL_SHA=$(sha256sum target/weights/cifar_cnn.pth | awk '{print $1}')
     MODEL_INFO_SHA=$(sha256sum target/weights/model_info.json | awk '{print $1}')
 fi
 
