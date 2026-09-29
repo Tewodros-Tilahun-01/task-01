@@ -25,8 +25,8 @@ source .venv/bin/activate
 
 # Install dependencies
 echo "Installing dependencies..."
-pip install --upgrade pip -q
-pip install -r requirements.txt -q
+pip install --upgrade pip
+pip install -r requirements.txt
 
 # Create directories
 echo "Creating directory structure..."
@@ -51,7 +51,7 @@ fi
 # Build Docker image
 if command -v docker &> /dev/null; then
     echo "Building Docker image..."
-    docker build -t cifar10-target:latest ./target -q
+    docker build -t cifar10-target:latest ./target
     echo ""
     echo "Setup complete!"
     echo ""
