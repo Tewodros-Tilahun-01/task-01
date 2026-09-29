@@ -109,6 +109,19 @@ def main() -> None:
     print("Step 2: Training surrogate model with knowledge distillation")
     print("=" * 60)
     
+    # To skip training and load a pre-trained model instead, comment out the training
+    # block below and uncomment these lines:
+    #
+    # from attacks.model_extraction.surrogate_arch import RealisticSurrogate
+    # surrogate = RealisticSurrogate(num_classes=10)
+    # model_path = ADV_DIR / "surrogate_model.pth"
+    # surrogate.load_state_dict(torch.load(model_path, map_location=device))
+    # surrogate.to(device)
+    # surrogate.eval()
+    # print(f"\n✓ Loaded pre-trained surrogate from {model_path}")
+    # loss_history = []  # Empty since we didn't train
+    # train_time = 0
+    
     train_start = time.time()
     surrogate, loss_history = train_surrogate(
         query_data=query_data,
